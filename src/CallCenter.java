@@ -5,6 +5,7 @@ public class CallCenter {
     private static final Queue<String> calls = new LinkedBlockingQueue<>();
     private static final int PAUSE = 1000;
     private static final int CALL_PROCESSING = 3000;
+    private String comparison;
 
     public void call() {
         calls.offer(Thread.currentThread().getName());
@@ -20,14 +21,15 @@ public class CallCenter {
         while (!(calls.peek() == null)) {
             try {
                 Thread.sleep(CALL_PROCESSING);
+                 comparison=calls.poll();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (calls.peek() == null) {
+            if (comparison == null) {
                 Thread.currentThread().interrupt();
                 break;
             }
-            System.out.println("Специалист " + Thread.currentThread().getName() + " обработал вызов " + calls.poll());
+            System.out.println("Специалист " + Thread.currentThread().getName() + " обработал вызов " + comparison);
         }
     }
 }
